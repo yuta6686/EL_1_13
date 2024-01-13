@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CutKnife : MonoBehaviour
 {
@@ -16,11 +18,30 @@ public class CutKnife : MonoBehaviour
     [SerializeField]
     private GameObject _defaultTrail;
 
+
     private bool _isMousePress = false;
+
+    [SerializeField]
+    private GameObject _decalObject;
+
+    [SerializeField]
+    private float _decalDistance = 3.0f;
+
+    [SerializeField]
+    private Vector3 _decalOffset;
+
+    public AudioClip _cutAudio;
+    private AudioSource audioSource;
+
+    private IntReactiveProperty _cutCount = new IntReactiveProperty();
+    public IntReactiveProperty _CutCount => _cutCount;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+
+        audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource.clip = _cutAudio;
     }
 
     // Start is called before the first frame update
@@ -59,13 +80,20 @@ public class CutKnife : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("trigger");
-
+    {        
         if (collision.CompareTag("shrimp") && _isMousePress)
-        {
-            Debug.Log("trigger shrimp");
+        {            
             collision.GetComponent<Shrimp>().Cut();
+
+            audioSource.Play();
+
+            _cutCount.Value++;
+
+            // RectTransformをワールド座標に変換
+            Vector3 worldPosition = RectTransformUtility.WorldToScreenPoint(null, collision.GetComponent<RectTransform>().position * _decalDistance + _decalOffset);
+
+            // ワールド座標を使用して新しいオブジェクトをInstantiate
+            Instantiate(_decalObject, worldPosition, Quaternion.identity);
         }
     }
 }

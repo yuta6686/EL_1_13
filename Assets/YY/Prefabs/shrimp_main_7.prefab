@@ -94,11 +94,11 @@ MonoBehaviour:
     _particle: {fileID: 3796825271911337340, guid: a143cc88c40b51d449d3f9175e91ae15, type: 3}
   _appearInfo:
     _direction:
-      _min: {x: -0.5, y: 0.2}
-      _max: {x: 0.5, y: 1}
+      _min: {x: -0.1, y: 0.2}
+      _max: {x: 0.1, y: 1}
     _strength:
       _min: 20
-      _max: 30
+      _max: 25
 --- !u!50 &4984356757826587886
 Rigidbody2D:
   serializedVersion: 4
@@ -114,7 +114,7 @@ Rigidbody2D:
   m_Mass: 0.2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0.2
+  m_GravityScale: 0.1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
